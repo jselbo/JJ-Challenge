@@ -1,6 +1,7 @@
 package com.selbo.util;
 
 import com.selbo.display.GamePanel;
+import com.selbo.map.KeyPair;
 import com.selbo.map.SpriteMap;
 import com.selbo.sprite.Sprite;
 import com.selbo.sprite.objects.FloorSprite;
@@ -17,26 +18,28 @@ public class MapUtils {
     public static SpriteMap createLevel1Map() {
         return new SpriteMap(
                 validate(new char[][] {
-                    "FFFFFFFFFFFFFFFFFFFFFFFF".toCharArray(),
-                    "FFFFFFFFFFFFFFFFFFFFFFFF".toCharArray(),
-                    "FFFFFFFFFFFFFFFFFFFFFFFF".toCharArray(),
-                    "FFFFFFFFFFFFFFFFFFFFFFFF".toCharArray(),
-                    "FFFFFFFFFFWFFFFFFFFFFFFF".toCharArray(),
-                    "FFFFFFFFFFWWWWWFFFFFFFFF".toCharArray(),
-                    "FFFFFFFFFFWFFFWFFFFFFFFF".toCharArray(),
-                    "FFFFFFFFFFWFFFWFFFFFFFFF".toCharArray(),
                     "FFFFFFFFFFWFFFFFFFFFFFFF".toCharArray(),
                     "FFFFFFFFFFWFFFFFFFFFFFFF".toCharArray(),
                     "FFFFFFFFFFFFFFFFFFFFFFFF".toCharArray(),
-                    "FFFFFFFFFFFFFFFFFFFFFFFF".toCharArray(),
-                    "FFFFFFFFFFFFFFFFFFFFFFFF".toCharArray(),
-                    "FFFFFFFFFFFFFFFFFFFFFFFF".toCharArray(),
+                    "FFFFFFFFFFWFFFFFFFFFFFFF".toCharArray(),
+                    "FFFFFFFFFFWFFFFFFFFFFFFF".toCharArray(),
+                    "FFFFFFFFFFWWWWWWWWWWWFFF".toCharArray(),
+                    "FFFFFFFFFFWFFFWWWFFFWWWF".toCharArray(),
+                    "FFFFFFFFFFWFWWWWWFFFFFWW".toCharArray(),
+                    "FFFFFFFFFFWFWFFFFFFFFFFF".toCharArray(),
+                    "FFFFFFFFFFWFFFFFFFWFFFFF".toCharArray(),
+                    "FFFFFFFFFFWWWWWWWWWFFFFF".toCharArray(),
+                    "FFFFFFFFFFFFFWFFFFFFFFFF".toCharArray(),
+                    "FFFFFFFFFFFFFWFFFFFFFFFF".toCharArray(),
+                    "FFFFFFFFFFFFFWFFFFFFFFFF".toCharArray(),
                     "FFFFFFFFFFFFFFFFFFFFFFFF".toCharArray(),
                     "FFFFFFFFFFFFFFFFFFFFFFFF".toCharArray(),
                     "FFFFFFFFFFFFFFFFFFFFFFFF".toCharArray(),
                     "FFFFFFFFFFFFFFFFFFFFFFFF".toCharArray(),
                 }),
-                new KeySprite().setBlockPosition(20, 8)
+                new KeyPair[] {
+                        new KeyPair(new KeyPair.Key(13, 6), new KeyPair.Keyhole(10, 2), KeyPair.Type.RED)
+                }
         );
     }
 
@@ -44,8 +47,6 @@ public class MapUtils {
         switch (tileCode) {
             case 'F':
                 return new FloorSprite();
-            case 'H':
-                return new KeyholeSprite();
             case 'W':
                 return new WallSprite();
         }

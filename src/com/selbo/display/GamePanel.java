@@ -3,6 +3,7 @@ package com.selbo.display;
 import com.selbo.map.SpriteMap;
 import com.selbo.sprite.Direction;
 import com.selbo.sprite.objects.HeroSprite;
+import com.selbo.sprite.objects.KeySprite;
 import com.selbo.util.MapUtils;
 
 import javax.swing.JPanel;
@@ -52,7 +53,8 @@ public class GamePanel extends JPanel {
         setFocusable(true);
         addKeyListener(new KeyListener() {
             @Override
-            public void keyTyped(KeyEvent e) {}
+            public void keyTyped(KeyEvent e) {
+            }
 
             @Override
             public void keyPressed(KeyEvent e) {
@@ -111,41 +113,49 @@ public class GamePanel extends JPanel {
     private void handleKeyInput() {
         if (pressedKey > 0) {
             if (handledKey != pressedKey) {
-                HeroSprite.State direction = null;
-                int blockX = hero.getBlockX();
-                int blockY = hero.getBlockY();
-                switch (pressedKey) {
-                    case KeyEvent.VK_UP:
-                        direction = HeroSprite.State.UP;
-                        blockY--;
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        direction = HeroSprite.State.RIGHT;
-                        blockX++;
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        direction = HeroSprite.State.DOWN;
-                        blockY++;
-                        break;
-                    case KeyEvent.VK_LEFT:
-                        direction = HeroSprite.State.LEFT;
-                        blockX--;
-                        break;
-                }
-
-                boolean canMove =
-                        (blockX >= 0 && blockX < NUM_COLS)
-                        && (blockY >= 0 && blockY < NUM_ROWS)
-                        && map.getBackgroundMap()[blockY][blockX].isPassable();
-                if (direction != null && canMove) {
-                    hero.setHeroState(direction);
-                    hero.setBlockPosition(blockX, blockY);
-                }
-
-                // TODO check object (key) and do something
-
+                processKey(pressedKey);
                 handledKey = pressedKey;
             }
+        }
+    }
+
+    private void processKey(int keyCode) {
+        HeroSprite.State direction = null;
+        int blockX = hero.getBlockX();
+        int blockY = hero.getBlockY();
+        switch (pressedKey) {
+            case KeyEvent.VK_UP:
+                direction = HeroSprite.State.UP;
+                blockY--;
+                break;
+            case KeyEvent.VK_RIGHT:
+                direction = HeroSprite.State.RIGHT;
+                blockX++;
+                break;
+            case KeyEvent.VK_DOWN:
+                direction = HeroSprite.State.DOWN;
+                blockY++;
+                break;
+            case KeyEvent.VK_LEFT:
+                direction = HeroSprite.State.LEFT;
+                blockX--;
+                break;
+        }
+
+        if (direction != null) {
+            hero.setHeroState(direction);
+
+            boolean canMove =
+                    (blockX >= 0 && blockX < NUM_COLS)
+                            && (blockY >= 0 && blockY < NUM_ROWS)
+                            && map.isBlockPassable(blockX, blockY);
+            if (canMove) {
+                hero.setBlockPosition(blockX, blockY);
+            }
+        }
+        KeySprite gotKey = map.getKeyOnBlock(blockX, blockY);
+        if (gotKey != null) {
+            gotKey.setObtained(true);
         }
     }
 }

@@ -36,9 +36,6 @@ public abstract class Sprite {
 
     public void setState(int index) {
       if (index != currIndex && index >= 0 && index < animations.length) {
-        x += (animations[currIndex].getImage().getWidth(null) - animations[index].getImage().getWidth(null))/2;
-            y += animations[currIndex].getImage().getHeight(null) - animations[index].getImage().getHeight(null);
-
         currIndex = index;
 
         animations[currIndex].start();
@@ -89,42 +86,37 @@ public abstract class Sprite {
       }
     }
 
-    public Sprite setPosition(float x, float y) {
+    public void setPosition(float x, float y) {
       this.x = x;
       this.y = y;
-      return this;
     }
 
-    public Sprite setPosition(Point2D location) {
+    public void setPosition(Point2D location) {
       if (location != null) {
         this.x = (float)location.getX();
         this.y = (float)location.getY();
       }
-      return this;
     }
 
-    public Sprite setBlockPosition(int x, int y) {
+    public void setBlockPosition(int x, int y) {
         setBlockX(x);
         setBlockY(y);
-        return this;
     }
 
     public Point getBlockPosition() {
         return new Point(getBlockX(), getBlockY());
     }
 
-    public Sprite setBlockX(int x) {
+    public void setBlockX(int x) {
         this.x = x * GamePanel.BLOCK_SIZE;
-        return this;
     }
 
     public int getBlockX() {
         return (int) (x / GamePanel.BLOCK_SIZE);
     }
 
-    public Sprite setBlockY(int y) {
+    public void setBlockY(int y) {
         this.y = y * GamePanel.BLOCK_SIZE;
-        return this;
     }
 
     public int getBlockY() {
@@ -135,18 +127,16 @@ public abstract class Sprite {
       return new Point2D.Float(x, y);
     }
 
-    public Sprite setX(float x) {
+    public void setX(float x) {
         this.x = x;
-        return this;
     }
 
     public float getX() {
         return x;
     }
 
-    public Sprite setY(float y) {
+    public void setY(float y) {
         this.y = y;
-        return this;
     }
 
     public float getY() {
@@ -181,11 +171,10 @@ public abstract class Sprite {
         return vy;
     }
 
-    public Sprite setDirection(Direction direction) {
+    public void setDirection(Direction direction) {
       if (direction == Direction.RIGHT || direction == Direction.LEFT) {
           this.direction = direction;
       }
-      return this;
     }
 
     public Direction getDirection() {
