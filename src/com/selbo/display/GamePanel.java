@@ -26,6 +26,7 @@ public class GamePanel extends JPanel {
     // (1 second) divided by (frames per second)
     private static final int SLEEP_TIME = (int)(1000f / TARGET_FPS);
     private static final Dimension PREFERRED_SIZE = new Dimension(NUM_COLS * BLOCK_SIZE, NUM_ROWS * BLOCK_SIZE);
+    private static final int LIGHT_RADIUS = 3;
 
     private SpriteMap map;
     private HeroSprite hero;
@@ -82,8 +83,40 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        map.paint(g2);
+        map.paintObscurableLayer(g2);
+
+        // Comment this line if you don't want to use the darkness overlay
+        paintDarknessOverlay(g2);
+        map.paintAlwaysVisibleLayer(g2);
         hero.paint(g2);
+    }
+
+    private void paintDarknessOverlay(Graphics2D g2) {
+        for (int i = 0; i < NUM_ROWS; i++) {
+            for (int j = 0; j < NUM_COLS; j++) {
+                int x = BLOCK_SIZE * j;
+                int y = BLOCK_SIZE * i;
+
+                g2.setColor(colorFromBlock(j, i));
+                g2.fillRect(x, y, BLOCK_SIZE, BLOCK_SIZE);
+            }
+        }
+    }
+
+    private Color colorFromBlock(int blockX, int blockY) {
+        int heroBlockX = hero.getBlockX();
+        int heroBlockY = hero.getBlockY();
+        int dx = Math.abs(heroBlockX - blockX);
+        int dy = Math.abs(heroBlockY - blockY);
+        if (dx >= LIGHT_RADIUS || dy >= LIGHT_RADIUS) {
+            return Color.black;
+        }
+
+        // so both dx, dy <= LIGHT_RADIUS - 1
+        int dSquared = dx*dx + dy*dy;
+        int MaxDistanceSquared = 2 * (LIGHT_RADIUS - 1) * (LIGHT_RADIUS - 1);
+        int alphaScale = 255 * dSquared / MaxDistanceSquared;
+        return new Color(0, 0, 0, alphaScale);
     }
 
     private void gameLoop() {

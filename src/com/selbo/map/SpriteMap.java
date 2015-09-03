@@ -51,7 +51,7 @@ public class SpriteMap {
         // Do nothing for now
     }
 
-    public void paint(Graphics2D g2) {
+    public void paintObscurableLayer(Graphics2D g2) {
         for (Sprite[] tileRow : backgroundMap) {
             for (Sprite tile : tileRow) {
                 tile.paint(g2);
@@ -63,6 +63,11 @@ public class SpriteMap {
             if (!key.isObtained()) {
                 key.paint(g2);
             }
+        }
+    }
+
+    public void paintAlwaysVisibleLayer(Graphics2D g2) {
+        for (Map.Entry<KeySprite, KeyholeSprite> pair : keyMap.entrySet()) {
             KeyholeSprite keyhole = pair.getValue();
             if (keyhole.getState() == KeyholeSprite.STATE_LOCKED) {
                 keyhole.paint(g2);
@@ -102,4 +107,6 @@ public class SpriteMap {
         }
         return null;
     }
+
+
 }
